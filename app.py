@@ -66,14 +66,14 @@ class Library(object):
         sh += "2. 否"
         return sh
     def showbook(self):
-        sh = ""
+        sh = "已預約的書：\n"
         file = open("book.txt", "r")
         for line in file:
             sh += line
         file.close()
         return sh
     def showroom(self):
-        sh = ""
+        sh = "已預約的自修室時間\n"
         file = open("room.txt", "r")
         for line in file:
             sh += line
@@ -84,7 +84,7 @@ app = Flask(__name__)
 bot = telegram.Bot(token='536502197:AAGB1eRfdmat7MXcD4P77NI5-XTTDyg7Cto')
 
 lib = Library()
-states = ['menu', 'book_borrowing', 'book_confirm', 'bookafter_confirm', 'room_booking', 'room_confirm', 'roomafter_confirm', 'info', 'book_info', 'room_info']
+states = ['menu', 'book_borrowing', 'book_confirm', 'bookafter_confirm', 'room_booking', 'room_confirm', 'roomafter_confirm', 'info' ]
 transitions = [
                ['goto_book_bor', 'menu', 'book_borrowing'], #menu
                ['goto_room_bok', 'menu', 'room_booking'],
