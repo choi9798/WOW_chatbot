@@ -5,7 +5,7 @@
 ![Alt text](state.png)
 
 <h3>設定</h3>
-<p>我是使用MAC OS X去完成這次作業，一開始要確定系統有安裝<code>python-telegram-bot</code>, <code>Graphviz</code>, <code>pygraphviz</code>, <code>ngrok</code>才可執行程式</p>
+<p>我是在MAC OS X上使用python 3去完成這次作業，一開始要確定系統有安裝<code>python-telegram-bot</code>, <code>Graphviz</code>, <code>pygraphviz</code>, <code>ngrok</code>才可執行程式</p>
 <p>一開始先到Terminal輸入<code>ngrok http 8000</code>, 然後複制它所派給的URL, 再放到app.py中的 <code>status = bot.set_webhook()</code>內</p>
 
 <h3>執行</h3>
