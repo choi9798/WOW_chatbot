@@ -42,18 +42,42 @@ class Library(object):
         sh += "2. 返回"
         return sh
     def bookconfirm_after(self):
+        file = open("book.txt", "a")
+        file.write(self.book_name+"\n")
+        file.close()
         sh = self.book_name + "預約成功\n"
         sh += "繼續預約書本？\n"
         sh += "1. 是\n"
         sh += "2. 否"
         return sh
     def roomtoconfirm(self, room):
+        self.room_thing = room
         sh = "你想預約的時間為：" + room + "\n"
         sh += "1. 確定\n"
         sh += "2. 返回"
         return sh
-    def bookconfirm_after(self):
-        sh = self.book_name + "預約成功\n"
+    def roomconfirm_after(self):
+        file = open("room.txt", "a")
+        file.write(self.room_thing+"\n")
+        file.close()
+        sh = self.room_thing + "\n預約成功\n"
+        sh += "繼續預約？\n"
+        sh += "1. 是\n"
+        sh += "2. 否"
+        return sh
+    def showbook(self):
+        sh = ""
+        file = open("book.txt", "r")
+        for line in file:
+            sh += line
+        file.close()
+        return sh
+    def showroom(self):
+        sh = ""
+        file = open("room.txt", "r")
+        for line in file:
+            sh += line
+        file.close()
         return sh
 
 app = Flask(__name__)
@@ -73,9 +97,6 @@ transitions = [
                ['room_entered', 'room_booking', 'room_confirm'], #room_booking
                ['room_confirmed', 'room_confirm', 'roomafter_confirm'],
                ['back_room_bok', 'roomafter_confirm', 'room_booking'],
-               
-               ['info_book', 'info', 'book_info'], #info
-               ['info_room', 'info', 'room_info'],
                
                ['quit', '*', 'menu']
         ]
@@ -117,6 +138,7 @@ def test(a):
             lib.goto_room_bok()
             return lib.menutoroom()
         elif a == "4":
+            lib.goto_info()
             return lib.menutoinfo()
         else:
             return "輸入了錯誤代號"
@@ -153,14 +175,45 @@ def test(a):
         if a == "exit()":
             lib.quit()
             return lib.print_menu()
-
-    if lib.state == "info":
-        if a == "exit()":
+        else:
+            lib.room_entered()
+            return lib.roomtoconfirm(a)
+    if lib.state == "room_confirm":
+        if a == "1":
+            lib.room_confirmed()
+            return lib.roomconfirm_after()
+        elif a == "2" or a == "exit()":
             lib.quit()
             return lib.print_menu()
+        else:
+            return "輸入了錯誤代號"
+    if lib.state == "roomafter_confirm":
+        if a == "1":
+            lib.back_room_bok()
+            return lib.menutoroom()
+        elif a == "exit()" or a == "2":
+            lib.quit()
+            return lib.print_menu()
+        else:
+            return "輸入了錯誤代號"
+
+    if lib.state == "info":
+        if a == "1":
+            return lib.showbook() + "\n\n" + lib.menutoinfo()
+        elif a == "2":
+            return lib.showroom() + "\n\n" + lib.menutoinfo()
+        elif a == "exit()":
+            lib.quit()
+            return lib.print_menu()
+        else:
+            return "輸入了錯誤的代號"
 
 
 
 if __name__ == "__main__":
+    file = open("book.txt", "a")
+    file.close()
+    file = open("room.txt", "a")
+    file.close()
     _set_webhook()
     app.run(port=8000)
